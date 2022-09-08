@@ -11,7 +11,7 @@ routes.use(loginRequired);
 routes.get('/authors/', AuthorController.index);
 routes.get('/author/:id', Validate(AuthorSchema.show), AuthorController.show);
 routes.post('/authors/', Validate(AuthorSchema.store), AuthorController.store);
-// routes.put('/author/:id', Validate(AuthorSchema.update), AuthorController.update);
-// routes.delete('/author/:id', Validate(AuthorSchema.delete), AuthorController.delete);
+routes.put('/author/:id', Validate(AuthorSchema.update), AuthorController.update);
+routes.delete('/author/:id', Validate(AuthorSchema.delete), AuthorController.delete);
 
 module.exports = routes;

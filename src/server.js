@@ -5,8 +5,10 @@ const bookRoutes = require('./routes/bookRoutes');
 const publisherRoutes = require('./routes/publisherRoutes');
 const userRoutes = require('./routes/userRoutes');
 const studentRoutes = require('./routes/studentRoutes');
+const pdfRoutes = require('./routes/pdfRoutes');
+const xlsRoutes = require('./routes/xlsRoutes');
 
-const routes = [authRoutes, authorRoutes, bookRoutes, publisherRoutes, userRoutes, studentRoutes];
+const routes = [authRoutes, authorRoutes, bookRoutes, publisherRoutes, userRoutes, studentRoutes, pdfRoutes, xlsRoutes];
 
 require('./database');
 

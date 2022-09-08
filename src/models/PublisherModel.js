@@ -6,6 +6,7 @@ class Publisher extends Model {
             name: { type: DataTypes.STRING },
         }, {
             sequelize,
+            paranoid: true,
         })
     }
 

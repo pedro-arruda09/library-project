@@ -6,6 +6,8 @@ module.exports = {
       name: Yup.string().required().min(3).max(255),
       synopsis: Yup.string().required().min(3).max(255),
       publish_date: Yup.date().required(),
+      publisher_id: Yup.number().required(),
+      author_id: Yup.number().required()
     }).noUnknown(),
   },
   update: {

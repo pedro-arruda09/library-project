@@ -14,13 +14,14 @@ class Book extends Model {
             },
         }, {
             sequelize,
+            paranoid: true,
         })
     }
     static associate(models) {
         this.belongsTo(models.User, { foreignKey: 'creator_id', as: 'user' });
         this.belongsTo(models.Publisher, { foreignKey: 'publisher_id', as: 'publisher' });
         this.belongsTo(models.Author, { foreignKey: 'author_id', as: 'author' });
-        // this.belongsToMany(models.Student, { foreignKey: 'book_id', through: 'student_books', as: 'students' });
+        this.belongsToMany(models.Student, { foreignKey: 'book_id', through: 'student_books', as: 'students' });
     }
 }
 

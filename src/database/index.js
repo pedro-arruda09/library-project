@@ -5,8 +5,9 @@ const Publisher = require('../models/PublisherModel');
 const Student = require('../models/StudentModel');
 const Author = require('../models/AuthorModel');
 const Book = require('../models/BookModel');
+const StudentBooks = require('../models/StudentBooksModel');
 
-const Models = [User, Publisher, Student, Author, Book];
+const Models = [User, Publisher, Student, Author, Book, StudentBooks];
 
 const connection = new Sequelize(dbConfig);
 

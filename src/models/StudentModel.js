@@ -14,11 +14,12 @@ class Student extends Model {
             },
         }, {
             sequelize,
+            paranoid: true,
         })
     }
     static associate(models) {
         this.belongsTo(models.User, { foreignKey: 'creator_id', as: 'user' });
-        // this.belongsToMany(models.Book, { foreignKey: 'student_id', through: 'student_books', as: 'books' });
+        this.belongsToMany(models.Book, { foreignKey: 'student_id', through: 'student_books', as: 'books' });
     }
 }
 

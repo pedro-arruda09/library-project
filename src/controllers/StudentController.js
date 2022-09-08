@@ -1,3 +1,4 @@
+const req = require('express/lib/request');
 const studentService = require('../services/studentService');
 const utils = require('../utils/utils')
 
@@ -23,6 +24,7 @@ module.exports = {
 
             return utils.handleResponse(res, createAuthor);
         } catch (e) {
+            console.log(e);
             res.status(500).json({ error: e.message });
         }
     },
@@ -46,11 +48,11 @@ module.exports = {
                 id: req.filter.id,
                 creator_id: req.userId
             };
-        
+
             await studentService.update(filter, changes);
 
             return utils.handleResponse(res, changes);
-        } catch(e) {
+        } catch (e) {
             return utils.handleError(res, e)
         }
     },
@@ -66,7 +68,20 @@ module.exports = {
         } catch (e) {
             return utils.handleError(res, e);
         }
-    }
+    },
 
-
+    async reservation(req, res) {
+        try {
+            await studentService.reservation({
+                student_id: req.filter.student_id,
+                book_ids: req.data.book_ids,
+            });
+            return res.json("Student reservation made");
+        } catch (e) {
+            console.log(e);
+            return res.status(400).json({
+                error: "This reservation cannot be made",
+            });
+        }
+    },
 };

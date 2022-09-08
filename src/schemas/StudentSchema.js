@@ -31,6 +31,14 @@ const schema = {
       id: Yup.number().required(),
     }),
   },
+  reservation: {
+    body: Yup.object({
+      book_ids: Yup.array().of(Yup.number())
+    }).noUnknown(),
+    params: Yup.object({
+      student_id: Yup.number().min(1).required()
+    }).noUnknown()
+  }
 }
 
 module.exports = schema;

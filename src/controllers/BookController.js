@@ -14,24 +14,25 @@ module.exports = {
 
     async store(req, res) {
         try {
-            const createAuthor = await bookService.store({
+            const createBook = await bookService.store({
                 ...req.data,
                 creator_id: req.userId,
             });
 
-            return utils.handleResponse(res, createAuthor);
+            return utils.handleResponse(res, createBook);
         } catch (e) {
+            console.log(req.data);
             res.status(500).json({ error: e.message });
         }
     },
 
     async show(req, res) {
         try {
-            const student = await bookService.show({
+            const book = await bookService.show({
                 ...req.filter,
                 creator_id: req.userId
             });
-            return utils.handleResponse(res, student);
+            return utils.handleResponse(res, book);
         } catch (e) {
             return utils.handleError(res, e)
         }
@@ -41,7 +42,7 @@ module.exports = {
         try {
             const changes = req.data;
             const filter = {
-                id: req.filter.id,
+                id: req.filter.id, 
                 creator_id: req.userId
             };
         
@@ -64,5 +65,9 @@ module.exports = {
         } catch (e) {
             return utils.handleError(res, e);
         }
+    },
+
+    async bookAssign(req, res) {
+        
     }
 }

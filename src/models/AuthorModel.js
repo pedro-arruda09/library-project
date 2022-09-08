@@ -13,7 +13,7 @@ class Author extends Model {
             }
         }, {
             sequelize,
-            tableName: 'authors',
+            paranoid: true,
         })
     }
 };
