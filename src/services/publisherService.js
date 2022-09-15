@@ -2,10 +2,8 @@ const PublisherModel = require('../models/PublisherModel');
 
 module.exports = {
 
-    index() {
-        return PublisherModel.findAll({
-            attributes: ['creator_id', 'name']
-        });
+    index(data) {
+        return PublisherModel.findAll(data);
     },
 
     store(data) {

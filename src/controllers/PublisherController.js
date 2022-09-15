@@ -4,7 +4,9 @@ const utils = require('../utils/utils');
 module.exports = {
     async index(req, res) {
         try {
-            const authors = await publisherService.index(req.userId);
+            const authors = await publisherService.index({
+                attributes: ['creator_id', 'name']
+            });
 
             return utils.handleResponse(res, authors);
         } catch (e) {

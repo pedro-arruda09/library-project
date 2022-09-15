@@ -4,7 +4,7 @@ const utils = require('../utils/utils');
 module.exports = {
     async index(req, res) {
         try {
-            const books = await bookService.index(req.userId);
+            const books = await bookService.index();
 
             return utils.handleResponse(res, books);
         } catch (e) {
@@ -63,21 +63,6 @@ module.exports = {
             return utils.handleResponse(res, `The book ${req.filter.id} was deleted succesfully.`);
         } catch (e) {
             return utils.handleError(res, e);
-        }
-    },
-
-    async sendToBookDb(req, res) {
-        try {
-            await bookService.sendToBookDb({
-                book_cover_id: req.body.book_cover_id,
-            });
-
-            return res.json("Book cover updated");
-        } catch (e) {
-            console.log(e);
-            return res.status(400).json({
-                error: "Unable to change book cover",
-            });
         }
     },
 }

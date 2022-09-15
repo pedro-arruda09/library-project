@@ -2,10 +2,8 @@ const AuthorModel = require('../models/AuthorModel');
 
 module.exports = {
 
-    async index() {
-        await AuthorModel.findAll({
-            attributes: ['name']
-        });
+    index(data) {
+        return AuthorModel.findAll(data);
     },
 
     store(data) {
