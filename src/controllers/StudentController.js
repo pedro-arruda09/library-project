@@ -1,6 +1,6 @@
-const req = require('express/lib/request');
 const studentService = require('../services/studentService');
 const utils = require('../utils/utils')
+const moment = require('moment');
 
 module.exports = {
     async index(req, res) {
@@ -75,7 +75,25 @@ module.exports = {
             await studentService.reservation({
                 student_id: req.filter.student_id,
                 book_ids: req.data.book_ids,
+                delivery_prediction: moment().add(3, 'days').format('YYYY-MM-DD'),
             });
+            return res.json("Student reservation made");
+        } catch (e) {
+            console.log(e);
+            return res.status(400).json({
+                error: "This reservation cannot be made",
+            });
+        }
+    },
+
+    async returnDate(req, res) {
+        try {
+            await studentService.returnDate({
+                student_id: req.filter.student_id,
+                book_ids: req.data.book_ids,
+                return_date: moment().add(10, 'days').format('YYYY-MM-DD'),
+            });
+
             return res.json("Student reservation made");
         } catch (e) {
             console.log(e);

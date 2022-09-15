@@ -12,7 +12,7 @@ class Publisher extends Model {
 
     static associate(models) {
         this.belongsTo(models.User, { foreignKey: 'creator_id', as: 'user' });
-        this.hasMany(models.Book, { foreignKey: 'publisher_id', as: 'book '});
+        this.hasMany(models.Book, { foreignKey: 'publisher_id', as: 'book'});
     }
 }
 

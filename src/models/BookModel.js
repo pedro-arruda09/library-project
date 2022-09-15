@@ -12,6 +12,9 @@ class Book extends Model {
                 type: DataTypes.DATEONLY,
                 defaultValue: '',
             },
+            book_cover_id: {
+                type: DataTypes.INTEGER
+            }
         }, {
             sequelize,
             paranoid: true,
@@ -22,6 +25,7 @@ class Book extends Model {
         this.belongsTo(models.Publisher, { foreignKey: 'publisher_id', as: 'publisher' });
         this.belongsTo(models.Author, { foreignKey: 'author_id', as: 'author' });
         this.belongsToMany(models.Student, { foreignKey: 'book_id', through: 'student_books', as: 'students' });
+        this.hasMany(models.BookCover, { foreignKey: 'book_id', as: 'book_covers' });
     }
 }
 

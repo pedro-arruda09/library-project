@@ -24,4 +24,12 @@ module.exports = {
         });
     },
 
+    async delete(filter) {
+        await this.show(filter);
+
+        return AuthorModel.destroy({
+            where: filter
+        });
+    }
+
 }

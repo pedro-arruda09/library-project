@@ -13,13 +13,12 @@ const generatePDF = (pdfTemplate, filePath) => {
                 reject('Deu erro');
                 return;
             }
-
             resolve(result.filename)
         });
     })
-}
+};
 
-const index = async (req, res) => {
+const index = async () => {
     const studentBooks = await StudentBooksModel.findAll({
         include: [{
             model: StudentModel,
@@ -33,45 +32,21 @@ const index = async (req, res) => {
         raw: true,
         nest: true,
         attributes: [],
-    })
+    });
 
     const librarian = await UserModel.findOne({
         attributes: ['name'],
         raw: true,
     })
 
-    const parsedStudentBooks = studentBooks.map(studentBook => {
-        return {
-            student: {
-                id: studentBook.student_id,
-                name: studentBook.student.name,
-            },
-            book: {
-                ...studentBook.book
-            }
-        }
-    }).reduce((structure, currentStudent) => {
-        if (!structure.student_id && !structure.student_name) {
-            return {
-                student_id: currentStudent.student.id,
-                student_name: currentStudent.student.name,
-                books: [currentStudent.book]
-            }
-        }
-
-        structure.books.push(currentStudent.book);
-
-        return structure;
-    }, {});
-
-    const booksHTML = parsedStudentBooks.books.reduce((html, currentBook) => {
+    const booksHTML = studentBooks.reduce((html, currentBook) => {
 
         html += `
                     <tr>
-                        <td>${parsedStudentBooks.student_name}</td>
-                        <td>${currentBook.name}</td>
-                        <td>${currentBook.synopsis}</td>
-                        <td>${currentBook.publish_date}</td>
+                        <td>${currentBook.student.name}</td>
+                        <td>${currentBook.book.name}</td>
+                        <td>${currentBook.book.synopsis}</td>
+                        <td>${currentBook.book.publish_date}</td>
                     </tr>
                         `
 
@@ -85,11 +60,7 @@ const index = async (req, res) => {
 
     const filePath = `./uploads/booksPDF.pdf`;
 
-    const pdfCreated = await generatePDF(pdfTemplate, filePath);
-
-    res.type('pdf');
-    res.download(pdfCreated);
-
+    return generatePDF(pdfTemplate, filePath);
 }
 
 module.exports = {

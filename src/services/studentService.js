@@ -1,6 +1,7 @@
 const StudentModel = require('../models/StudentModel');
 const StudentBooksModel = require('../models/StudentBooksModel');
 const BookModel = require('../models/BookModel');
+const moment = require('moment');
 
 module.exports = {
     async index() {
@@ -41,6 +42,7 @@ module.exports = {
                 id: book_ids
             }
         });
+
         
         if (books !== book_ids.length) {
             throw new Error('This book is not available!');
@@ -49,7 +51,8 @@ module.exports = {
         //verifica se o livro já foi reservado
         const reservedBooks = await StudentBooksModel.count({
             where: {
-                book_id: book_ids
+                book_id: book_ids,
+                return_date: null,
             }
         });
 
@@ -58,39 +61,50 @@ module.exports = {
         }
 
         //retorna todos os livros que o estudante solicitou reserva
-        const booksRegistered = await StudentBooksModel.findAll({
-            where: {
-                student_id
-            },
-            attributes: ['book_id']
-        });
+        // const booksRegistered = await StudentBooksModel.findAll({
+        //     where: {
+        //         student_id
+        //     },
+        //     attributes: ['book_id']
+        // });
 
-        const booksRegisteredIds = booksRegistered.map(item => item.book_id);
         const booksToCreate = [];
-        const booksToDelete = [];
-
-        booksRegisteredIds.forEach(bookId => {
-            if (!book_ids.includes(bookId)) {
-                booksToDelete.push(bookId)
-            }
-        });
 
         book_ids.forEach(bookId => {
-            if (!booksRegisteredIds.includes(bookId)) {
-                booksToCreate.push({
-                    student_id: student_id,
-                    book_id: bookId,
-                })
-            }
+            booksToCreate.push({
+                student_id: student_id,
+                book_id: bookId,
+                delivery_prediction: moment().add(3, 'days').format('YYYY-MM-DD'),
+            })
         });
 
-        await StudentBooksModel.destroy({
-            where: {
-                book_id: booksToDelete,
-                student_id: student_id,
-            }
-        })
+        console.log(booksToCreate);
 
         return StudentBooksModel.bulkCreate(booksToCreate);
     },
+
+    async returnDate({ student_id, book_ids }) {
+        const totalReservations = await StudentBooksModel.count({
+          where: {
+            student_id,
+            book_id: book_ids,
+            return_date: null
+          },
+        });
+    
+        if (totalReservations !== book_ids.length) {
+          throw new Error("This reservation was already made!");
+        }
+    
+        await StudentBooksModel.update({
+            return_date: moment().add(10, 'days').format("YYYY-MM-DD"),
+        }, {
+            where: {
+                student_id,
+                book_id: book_ids,
+            }
+        });
+    
+        return true;
+    }
 };

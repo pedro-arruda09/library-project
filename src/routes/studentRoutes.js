@@ -14,5 +14,6 @@ routes.post('/students/', Validate(StudentSchema.store), StudentController.store
 routes.put('/student/:id', Validate(StudentSchema.update), StudentController.update);
 routes.delete('/student/:id', Validate(StudentSchema.delete), StudentController.delete);
 routes.post('/students/:student_id/reservation', Validate(StudentSchema.reservation), StudentController.reservation);
+routes.post('/students/:student_id/return-date/', Validate(StudentSchema.reservation), StudentController.returnDate);
 
 module.exports = routes;

@@ -3,7 +3,10 @@ const { Model, DataTypes } = require('sequelize');
 class StudentBooks extends Model {
     static init(sequelize) {
         super.init(
-            {}, {
+            {
+                delivery_prediction: DataTypes.DATEONLY,
+                return_date: DataTypes.DATEONLY,
+            }, {
             sequelize,
             paranoid: true,
         })

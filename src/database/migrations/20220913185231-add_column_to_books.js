@@ -2,11 +2,12 @@ module.exports = {
   up(queryInterface, Sequelize) {
     return Promise.all([
       queryInterface.addColumn(
-        'student_books', // table name
-        'delivery_prediction', // new field name
+        'books', // table name
+        'book_cover_id', // new field name
         {
-          type: Sequelize.DATEONLY,
+          type: Sequelize.INTEGER,
           allowNull: true,
+          defaultValue: null
         },
       ),
     ]);

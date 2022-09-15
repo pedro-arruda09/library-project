@@ -1,23 +1,29 @@
-'use strict';
-
 module.exports = {
-  up(queryInterface, Sequelize) {
-    return queryInterface.createTable('student_books', {
+  up: (queryInterface, Sequelize) => {
+    return queryInterface.createTable('book_covers', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
+      originalname: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       book_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: { model: 'books', key: 'id' }
       },
-      student_id: {
+      creator_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'students', key: 'id' }
+        references: { model: 'users', key: 'id' },
+      },
+      filename: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       created_at: {
         type: Sequelize.DATE,
@@ -26,16 +32,11 @@ module.exports = {
       updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
-      },
-      deleted_at: {
-        type: Sequelize.DATE,
-        allowNull: true,
-        defaultValue: null
       }
     });
   },
 
-  down(queryInterface, Sequelize) {
-    return queryInterface.dropTable('student_books');
+  down: (queryInterface) => {
+    return queryInterface.dropTable('book_covers');
   }
 };

@@ -4,9 +4,9 @@ const utils = require('../utils/utils');
 module.exports = {
     async index(req, res) {
         try {
-            const authors = await bookService.index(req.userId);
+            const books = await bookService.index(req.userId);
 
-            return utils.handleResponse(res, authors);
+            return utils.handleResponse(res, books);
         } catch (e) {
             return utils.handleError(res, 'Unable to view books');
         }
@@ -21,7 +21,6 @@ module.exports = {
 
             return utils.handleResponse(res, createBook);
         } catch (e) {
-            console.log(req.data);
             res.status(500).json({ error: e.message });
         }
     },
@@ -67,7 +66,18 @@ module.exports = {
         }
     },
 
-    async bookAssign(req, res) {
-        
-    }
+    async sendToBookDb(req, res) {
+        try {
+            await bookService.sendToBookDb({
+                book_cover_id: req.body.book_cover_id,
+            });
+
+            return res.json("Book cover updated");
+        } catch (e) {
+            console.log(e);
+            return res.status(400).json({
+                error: "Unable to change book cover",
+            });
+        }
+    },
 }

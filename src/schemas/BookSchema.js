@@ -30,4 +30,12 @@ module.exports = {
       id: Yup.number().required(),
     }),
   },
+  sendBookToDb: {
+    body: Yup.object({
+      book_cover_id: Yup.number()
+    }).noUnknown(),
+    params: Yup.object({
+      id: Yup.number().min(1).required()
+    }).noUnknown()
+  }
 }
